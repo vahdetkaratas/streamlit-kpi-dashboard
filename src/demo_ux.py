@@ -1,11 +1,10 @@
 """
-Portfolio demo chrome: hero, guidance cards, quick dataset picks.
-Streamlit-native; minimal HTML wrappers (single divs) styled in ui_theme.py.
+Portfolio demo copy and layout: hero text, step guidance, quick dataset picks.
+Uses Streamlit primitives only (no custom HTML shells).
 """
 
 from __future__ import annotations
 
-import html
 from pathlib import Path
 
 import streamlit as st
@@ -18,11 +17,8 @@ def render_empty_state_welcome(sources: dict[str, Path]) -> None:
     demo_names = list(sources.keys())
     first = demo_names[0] if demo_names else "Demo Sales"
 
-    _render_hero(
-        compact=False,
-        mode="empty",
-        profile_line=None,
-    )
+    _render_hero_streamlit(compact=False, mode="empty", profile_caption=None)
+
     st.markdown("### How to use this demo")
     _render_guide_columns(mode="empty")
 
@@ -31,16 +27,13 @@ def render_empty_state_welcome(sources: dict[str, Path]) -> None:
         st.session_state["kpi_dataset_choice"] = first
         st.rerun()
 
-    st.caption("Or open the **sidebar** → **Dataset** to pick **Demo Sales**, **Demo Marketing**, or **Upload CSV**.")
+    st.caption("Or open the sidebar → **Dataset** to pick a demo or **Upload CSV**.")
 
 
 def render_main_hero(*, mapping: ColumnMapping, compact: bool) -> None:
     """Top of dashboard when data is loaded."""
-    profile_line = (
-        f"<strong>Profile:</strong> {mapping.profile.capitalize()} · "
-        f"<strong>Trend metric:</strong> {html.escape(mapping.trend_metric_label)}"
-    )
-    _render_hero(compact=compact, mode="loaded", profile_line=profile_line)
+    cap = f"Profile: **{mapping.profile.capitalize()}** · Trend metric: **{mapping.trend_metric_label}**"
+    _render_hero_streamlit(compact=compact, mode="loaded", profile_caption=cap)
 
 
 def render_how_to_and_quick_demos(*, demo_labels: list[str]) -> None:
@@ -59,65 +52,53 @@ def render_how_to_and_quick_demos(*, demo_labels: list[str]) -> None:
                     st.rerun()
 
 
-def _render_hero(
+def _render_hero_streamlit(
     *,
     compact: bool,
     mode: str,
-    profile_line: str | None,
+    profile_caption: str | None,
 ) -> None:
-    title_tag = "h3" if compact else "h1"
+    if compact:
+        st.markdown("### KPI Dashboard Demo")
+    else:
+        st.title("KPI Dashboard Demo")
+
     if mode == "empty":
-        lead = (
+        st.markdown(
             "Upload a CSV or load a sample to explore **KPIs**, **trends**, and a **“what changed?”** summary—"
             "so business performance is clear without a separate BI stack."
         )
-        sub = (
+        st.caption(
             "Ideal for **sales** and **marketing** exports: one date column plus metrics is enough to get started."
         )
     else:
-        lead = (
+        st.markdown(
             "Track **money**, **volume or conversions**, and **orders or CTR** for the selected period, "
             "with optional **compare to the previous period** so you see direction, not just a snapshot."
         )
-        sub = (
-            "Leaders get a single screen for “how did we do?”—then use **Export snapshot** in the sidebar to share numbers."
+        st.caption(
+            "Leaders get a single screen for how we did—then use **Export snapshot** in the sidebar to share numbers."
         )
 
-    meta = ""
-    if profile_line:
-        meta = f'<p class="vd-hero-meta">{profile_line}</p>'
-
-    st.markdown(
-        f"""
-<div class="vd-hero">
-  <{title_tag} class="vd-hero-title">KPI Dashboard Demo</{title_tag}>
-  <p class="vd-hero-lead">{lead}</p>
-  <p class="vd-hero-sub">{sub}</p>
-  {meta}
-</div>
-        """,
-        unsafe_allow_html=True,
-    )
+    if profile_caption:
+        st.caption(profile_caption)
 
 
 def _render_guide_columns(*, mode: str) -> None:
     if mode == "empty":
         cards = [
-            ("1 · Data", "Use <strong>Use sample data</strong> above or the sidebar <strong>Dataset</strong> (demos or <strong>Upload CSV</strong>)."),
-            ("2 · Explore", "After load, use sidebar mapping and <strong>date range</strong>; KPIs and charts update on each run."),
-            ("3 · Share", "<strong>Export snapshot</strong> builds a ZIP with CSV extracts, summary, and optional chart PNGs."),
+            ("1 · Data", "Use **Use sample data** above or the sidebar **Dataset** (demos or **Upload CSV**)."),
+            ("2 · Explore", "After load, use sidebar mapping and **date range**; KPIs and charts update on each run."),
+            ("3 · Share", "**Export snapshot** builds a ZIP with CSV extracts, summary, and optional chart PNGs."),
         ]
     else:
         cards = [
-            ("1 · Refine", "Sidebar: <strong>dates</strong>, <strong>compare previous period</strong>, <strong>minimum rows</strong> guardrails."),
-            ("2 · View", "Scan <strong>KPI summary</strong> below, then <strong>Trend</strong> and <strong>Breakdown</strong> charts."),
-            ("3 · Optional", "<strong>Compact layout</strong> for demos; <strong>OpenAI</strong> (if configured) enriches the insight text."),
+            ("1 · Refine", "Sidebar: **dates**, **compare previous period**, **minimum rows** guardrails."),
+            ("2 · View", "Scan **KPI summary** below, then **Trend** and **Breakdown** charts."),
+            ("3 · Optional", "**Compact layout** for demos; **OpenAI** (if configured) enriches the insight text."),
         ]
     c1, c2, c3 = st.columns(3)
     for col, (title, body) in zip((c1, c2, c3), cards):
         with col:
-            st.markdown(
-                f'<div class="vd-guide-col"><p class="vd-guide-title">{html.escape(title)}</p>'
-                f'<p class="vd-guide-body">{body}</p></div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"**{title}**")
+            st.markdown(body)

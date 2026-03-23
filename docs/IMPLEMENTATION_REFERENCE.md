@@ -27,7 +27,7 @@ kpi-dashboard-app/
 │   ├── kpis.py             # KPI computation
 │   ├── dashboard.py        # Streamlit UI sections / Plotly figures
 │   ├── demo_ux.py          # portfolio hero, guide cards, quick demo buttons
-│   ├── ui_theme.py         # layout-shell palette (Poppins, dark, amber); Plotly styling
+│   ├── ui_theme.py         # Plotly light template; optional theme hook (Streamlit default UI)
 │   ├── ai_insight.py       # "what changed?" (LLM + rule fallback)
 │   ├── app_flow.py         # Streamlit wiring (sidebar → KPIs → export)
 │   ├── app_support.py      # small pure helpers for app_flow

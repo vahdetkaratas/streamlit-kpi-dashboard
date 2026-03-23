@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 from typing import Optional
 
 import plotly.express as px
@@ -9,7 +8,7 @@ import streamlit as st
 from .data_model import ColumnMapping
 from .demo_ux import render_how_to_and_quick_demos, render_main_hero
 from .kpis import PeriodKpiSummary
-from .ui_theme import ACCENT, apply_plotly_dashboard_theme
+from .ui_theme import apply_plotly_dashboard_theme
 
 
 def _format_money(x: Optional[float]) -> str:
@@ -59,17 +58,13 @@ def render_dashboard(
     demo_quick_labels: Optional[list[str]] = None,
 ) -> None:
     chart_h = 220 if compact else 320
-    _sec_cls = "vd-section compact" if compact else "vd-section"
 
     render_main_hero(mapping=mapping, compact=compact)
     render_how_to_and_quick_demos(demo_labels=list(demo_quick_labels or []))
 
     st.divider()
 
-    st.markdown(
-        f'<p class="{_sec_cls} vd-section-kpi">KPI summary</p>',
-        unsafe_allow_html=True,
-    )
+    st.subheader("KPI summary")
     st.caption("Primary metrics for the selected date range (deltas show when **Compare with previous period** is on).")
 
     if current.kpis_suppressed:
@@ -127,12 +122,12 @@ def render_dashboard(
         )
 
     st.divider()
-    st.markdown(f'<p class="{_sec_cls}">Charts</p>', unsafe_allow_html=True)
+    st.subheader("Charts")
     st.caption("Hover points and bars for exact values.")
-    st.markdown(f'<p class="{_sec_cls}">Trend</p>', unsafe_allow_html=True)
+    st.markdown("#### Trend")
     if not current.trend.empty:
         trend_fig = px.line(current.trend, x="date", y="value", markers=False)
-        trend_fig.update_traces(line=dict(color=ACCENT, width=2))
+        trend_fig.update_traces(line=dict(width=2))
         apply_plotly_dashboard_theme(
             trend_fig,
             height=chart_h,
@@ -147,7 +142,7 @@ def render_dashboard(
         )
 
     bd_title = "Breakdown" if mapping.dimension_col else "Breakdown (not available)"
-    st.markdown(f'<p class="{_sec_cls}">{bd_title}</p>', unsafe_allow_html=True)
+    st.markdown(f"#### {bd_title}")
 
     if mapping.dimension_col:
         if current.breakdown is not None and not current.breakdown.empty:
@@ -157,7 +152,7 @@ def render_dashboard(
                 y="value",
                 title=None if compact else f"Top {mapping.dimension_col} by {mapping.trend_metric_label}",
             )
-            fig.update_traces(marker_color=ACCENT, marker_line_width=0)
+            fig.update_traces(marker_line_width=0)
             apply_plotly_dashboard_theme(
                 fig,
                 height=chart_h,
@@ -176,6 +171,5 @@ def render_dashboard(
         )
 
     st.divider()
-    st.markdown(f'<p class="{_sec_cls}">What changed?</p>', unsafe_allow_html=True)
-    _insight_safe = html.escape(ai_text).replace("\n", "<br/>")
-    st.markdown(f'<div class="vd-insight">{_insight_safe}</div>', unsafe_allow_html=True)
+    st.subheader("What changed?")
+    st.write(ai_text)

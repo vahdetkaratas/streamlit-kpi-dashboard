@@ -12,7 +12,7 @@ This document states **which layer owns what**, so refactors stay predictable. T
 | **Metric safety** | `metric_guardrails.py` | Pure helpers (e.g. safe ratios). No I/O, no Streamlit. |
 | **KPI logic** | `kpis.py` | Period filtering, aggregates, trend/breakdown frames → `PeriodKpiSummary`. No UI strings beyond labels implied by dict keys. |
 | **Insight** | `ai_insight.py` | Text from two `PeriodKpiSummary` instances (rule + optional OpenAI). No raw CSV, no Plotly. |
-| **Presentation** | `dashboard.py`, `demo_ux.py`, `ui_theme.py` | `dashboard.py`: charts + KPI row + insight; `demo_ux.py`: hero, guidance, quick dataset buttons; `ui_theme.py`: injected CSS + Plotly theme. No CSV load in `dashboard` / `demo_ux`. |
+| **Presentation** | `dashboard.py`, `demo_ux.py`, `ui_theme.py` | `dashboard.py`: charts + KPI row + insight; `demo_ux.py`: hero copy, guidance, quick dataset buttons; `ui_theme.py`: Plotly `plotly_white` layout helper (Streamlit handles app chrome). No CSV load in `dashboard` / `demo_ux`. |
 | **I/O & packaging** | `load.py`, `export_snapshot.py`, `mapping_presets.py` | Read demo/upload paths; write snapshot folders/ZIP; preset JSON. |
 | **Cross-cutting** | `observability.py`, `version.py` | Logging, error IDs, version string. |
 | **Composition** | `app.py` (entry), `app_flow.py` | Wire sidebar → load → map → validate → KPIs → insight → dashboard → export; log events. Keep `app.py` minimal. |
