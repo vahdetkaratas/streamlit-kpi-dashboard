@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile": "sales",
+  "date_col": "order_date",
+  "revenue_col": "sales",
+  "volume_col": "quantity",
+  "order_id_col": "order_id",
+  "spend_col": null,
+  "conversions_col": null,
+  "clicks_col": null,
+  "impressions_col": null,
+  "dimension_col": "region",
+  "trend_metric_col": "sales",
+  "trend_metric_label": "Revenue"
+}

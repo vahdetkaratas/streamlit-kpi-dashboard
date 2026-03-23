@@ -1,0 +1,61 @@
+order_date,sales,quantity,region,category,product,order_id
+2026-01-15,1207,2,North,Furniture,Furniture-Item-1,10000
+2026-01-16,1238,3,South,Office Supplies,Office Supplies-Item-2,10001
+2026-01-17,1262,4,East,Technology,Technology-Item-3,10002
+2026-01-18,1282,5,North,Furniture,Furniture-Item-4,10003
+2026-01-19,1313,6,South,Office Supplies,Office Supplies-Item-1,10004
+2026-01-20,1337,7,East,Technology,Technology-Item-2,10005
+2026-01-21,1357,8,North,Furniture,Furniture-Item-3,10006
+2026-01-22,1388,9,South,Office Supplies,Office Supplies-Item-4,10007
+2026-01-23,1412,10,East,Technology,Technology-Item-1,10008
+2026-01-24,1432,2,North,Furniture,Furniture-Item-2,10009
+2026-01-25,1293,3,South,Office Supplies,Office Supplies-Item-3,10010
+2026-01-26,1317,4,East,Technology,Technology-Item-4,10011
+2026-01-27,1337,5,North,Furniture,Furniture-Item-1,10012
+2026-01-28,1368,6,South,Office Supplies,Office Supplies-Item-2,10013
+2026-01-29,1392,7,East,Technology,Technology-Item-3,10014
+2026-01-30,1412,8,North,Furniture,Furniture-Item-4,10015
+2026-01-31,1443,9,South,Office Supplies,Office Supplies-Item-1,10016
+2026-02-01,1467,10,East,Technology,Technology-Item-2,10017
+2026-02-02,1487,2,North,Furniture,Furniture-Item-3,10018
+2026-02-03,1518,3,South,Office Supplies,Office Supplies-Item-4,10019
+2026-02-04,1372,4,East,Technology,Technology-Item-1,10020
+2026-02-05,1392,5,North,Furniture,Furniture-Item-2,10021
+2026-02-06,1423,6,South,Office Supplies,Office Supplies-Item-3,10022
+2026-02-07,1447,7,East,Technology,Technology-Item-4,10023
+2026-02-08,1467,8,North,Furniture,Furniture-Item-1,10024
+2026-02-09,1498,9,South,Office Supplies,Office Supplies-Item-2,10025
+2026-02-10,1522,10,East,Technology,Technology-Item-3,10026
+2026-02-11,1542,2,North,Furniture,Furniture-Item-4,10027
+2026-02-12,1573,3,South,Office Supplies,Office Supplies-Item-1,10028
+2026-02-13,1597,4,East,Technology,Technology-Item-2,10029
+2026-02-14,1447,5,North,Furniture,Furniture-Item-3,10030
+2026-02-15,1478,6,South,Office Supplies,Office Supplies-Item-4,10031
+2026-02-16,1502,7,East,Technology,Technology-Item-1,10032
+2026-02-17,1522,8,North,Furniture,Furniture-Item-2,10033
+2026-02-18,1553,9,South,Office Supplies,Office Supplies-Item-3,10034
+2026-02-19,1577,10,East,Technology,Technology-Item-4,10035
+2026-02-20,1597,2,North,Furniture,Furniture-Item-1,10036
+2026-02-21,1628,3,South,Office Supplies,Office Supplies-Item-2,10037
+2026-02-22,1652,4,East,Technology,Technology-Item-3,10038
+2026-02-23,1672,5,North,Furniture,Furniture-Item-4,10039
+2026-02-24,1533,6,South,Office Supplies,Office Supplies-Item-1,10040
+2026-02-25,1557,7,East,Technology,Technology-Item-2,10041
+2026-02-26,1577,8,North,Furniture,Furniture-Item-3,10042
+2026-02-27,1608,9,South,Office Supplies,Office Supplies-Item-4,10043
+2026-02-28,1632,10,East,Technology,Technology-Item-1,10044
+2026-03-01,1652,2,North,Furniture,Furniture-Item-2,10045
+2026-03-02,1683,3,South,Office Supplies,Office Supplies-Item-3,10046
+2026-03-03,1707,4,East,Technology,Technology-Item-4,10047
+2026-03-04,1727,5,North,Furniture,Furniture-Item-1,10048
+2026-03-05,1758,6,South,Office Supplies,Office Supplies-Item-2,10049
+2026-03-06,1612,7,East,Technology,Technology-Item-3,10050
+2026-03-07,1632,8,North,Furniture,Furniture-Item-4,10051
+2026-03-08,1663,9,South,Office Supplies,Office Supplies-Item-1,10052
+2026-03-09,1687,10,East,Technology,Technology-Item-2,10053
+2026-03-10,1707,2,North,Furniture,Furniture-Item-3,10054
+2026-03-11,1738,3,South,Office Supplies,Office Supplies-Item-4,10055
+2026-03-12,1762,4,East,Technology,Technology-Item-1,10056
+2026-03-13,1782,5,North,Furniture,Furniture-Item-2,10057
+2026-03-14,1813,6,South,Office Supplies,Office Supplies-Item-3,10058
+2026-03-15,1837,7,East,Technology,Technology-Item-4,10059

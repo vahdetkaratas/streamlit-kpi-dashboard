@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.coverage
+htmlcov/
+.tox/
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets and local env (keep .env.example committed)
+.env
+.env.local
+.env.*.local
+
+# Streamlit — never commit real keys (Cloud uses its own secrets UI)
+.streamlit/secrets.toml
+
+# Runtime outputs (exports, logs, user presets, local screenshots)
+artifacts/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# JetBrains
+.idea/
