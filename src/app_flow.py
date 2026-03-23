@@ -33,29 +33,9 @@ from src.upload_limits import (
     require_upload_under,
 )
 from src.validation import ValidationError, validate_and_prepare_dataset
+from src.demo_ux import render_empty_state_welcome
 from src.ui_theme import inject_vercel_demo_theme
 from src.version import get_app_version
-
-
-def _render_welcome_empty_state(sources: dict[str, Path]) -> None:
-    """Shown when no CSV is loaded yet (portfolio onboarding)."""
-    demo_names = list(sources.keys())
-    first = demo_names[0] if demo_names else "Demo Sales"
-    st.title("KPI Dashboard Demo")
-    st.markdown(
-        "Turn **sales or marketing CSVs** into clear KPIs, trend and breakdown charts, "
-        "and a short **“what changed?”** summary—so performance is obvious in seconds."
-    )
-    st.markdown("### How to use this demo")
-    st.markdown(
-        "- **Use sample data** — click the button below or choose **Demo Sales** / **Demo Marketing** in the sidebar.\n"
-        "- **Or upload** your file: sidebar **Dataset → Upload CSV**.\n"
-        "- Then use the sidebar for **dates**, **compare**, and **export**; the main area shows **KPIs**, **charts**, and **insights**."
-    )
-    if st.button("Use sample data", type="primary", use_container_width=False):
-        st.session_state["kpi_dataset_choice"] = first
-        st.rerun()
-    st.caption("After data loads, controls stay in the **sidebar** → scroll up if needed.")
 
 
 def _date_input_range(label: str, min_date: pd.Timestamp, max_date: pd.Timestamp) -> tuple[pd.Timestamp, pd.Timestamp]:
@@ -136,7 +116,7 @@ def run_dashboard_app() -> None:
                 st.stop()
 
     if df_raw is None:
-        _render_welcome_empty_state(sources)
+        render_empty_state_welcome(sources)
         st.stop()
 
     columns = [str(c) for c in df_raw.columns]
@@ -260,7 +240,7 @@ def run_dashboard_app() -> None:
 
     validation_report: dict = {}
     try:
-        with st.spinner("Processing data…"):
+        with st.spinner("Processing data..."):
             df, validation_report = validate_and_prepare_dataset(df_raw, mapping, min_date_parse_ratio=0.8)
             log_event(
                 "validation_success",
@@ -343,7 +323,7 @@ def run_dashboard_app() -> None:
             "**not** raw CSV rows."
         )
 
-    with st.spinner("Processing data…"):
+    with st.spinner("Processing data..."):
         current_summary = compute_period_summary(
             df, mapping, start_date, end_date, min_rows_for_kpis=min_rows_for_kpis
         )
@@ -368,6 +348,7 @@ def run_dashboard_app() -> None:
         previous=previous_summary,
         compare_enabled=compare_enabled,
         compact=compact_layout,
+        demo_quick_labels=list(sources.keys()),
     )
 
     st.sidebar.title("Export")

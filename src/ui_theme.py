@@ -73,8 +73,8 @@ def inject_vercel_demo_theme() -> None:
     margin-right: auto;
   }}
   .block-container {{
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
+    padding-top: 1.25rem;
+    padding-bottom: 2.75rem;
     font-family: {FONT_SANS};
     font-weight: 400;
     font-size: 15px;
@@ -102,6 +102,84 @@ def inject_vercel_demo_theme() -> None:
   hr {{
     border-color: var(--vd-border) !important;
     opacity: 1 !important;
+    margin: 2rem 0 !important;
+  }}
+  .vd-hero {{
+    background: linear-gradient(159deg, rgba(45, 45, 58, 0.65) 0%, rgba(43, 43, 53, 0.45) 100%);
+    border: 1px solid var(--vd-border);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem 1.6rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--vd-shadow-2);
+  }}
+  .vd-hero .vd-hero-title {{
+    font-family: {FONT_SANS} !important;
+    margin: 0 0 0.65rem 0 !important;
+    padding: 0 !important;
+    color: var(--vd-text) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+  }}
+  .vd-hero h3.vd-hero-title {{
+    font-size: 1.35rem !important;
+  }}
+  .vd-hero .vd-hero-lead {{
+    font-family: {FONT_SANS};
+    margin: 0 0 0.5rem 0;
+    font-size: 1.02rem;
+    font-weight: 500;
+    line-height: 1.55;
+    color: var(--vd-text);
+  }}
+  .vd-hero .vd-hero-sub {{
+    font-family: {FONT_SANS};
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--vd-muted);
+  }}
+  .vd-hero .vd-hero-meta {{
+    font-family: {FONT_SANS};
+    margin: 1rem 0 0 0;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--vd-muted2);
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--vd-border);
+  }}
+  .vd-guide-col {{
+    border: 1px solid var(--vd-border);
+    border-radius: 12px;
+    padding: 1rem 1.15rem;
+    background: rgba(25, 25, 35, 0.45);
+    box-shadow: var(--vd-shadow-2);
+    min-height: 6.5rem;
+  }}
+  .vd-guide-col .vd-guide-title {{
+    font-family: {FONT_SANS};
+    margin: 0 0 0.45rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--vd-text);
+    line-height: 1.35;
+  }}
+  .vd-guide-col .vd-guide-body {{
+    font-family: {FONT_SANS};
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--vd-muted);
+  }}
+  p.vd-section-kpi {{
+    margin-top: 0.25rem !important;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid var(--vd-accent);
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
   }}
   a {{
     color: var(--vd-accent) !important;
@@ -146,6 +224,7 @@ def inject_vercel_demo_theme() -> None:
   [data-testid="stMetric"] {{
     background: linear-gradient(159deg, rgba(45, 45, 58, 0.95) 0%, rgba(43, 43, 53, 0.95) 100%) !important;
     border: 1px solid var(--vd-border) !important;
+    border-left: 3px solid var(--vd-accent) !important;
     border-radius: 8px !important;
     padding: 0.85rem 1rem !important;
     box-shadow: var(--vd-shadow-2);
@@ -167,7 +246,7 @@ def inject_vercel_demo_theme() -> None:
     padding: 1rem 1.15rem !important;
   }}
   section.main [data-testid="stMetricValue"] {{
-    font-size: 1.45rem !important;
+    font-size: 1.6rem !important;
     line-height: 1.2 !important;
   }}
   [data-testid="stMetricDelta"] {{

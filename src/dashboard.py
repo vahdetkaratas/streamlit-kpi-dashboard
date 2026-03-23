@@ -7,6 +7,7 @@ import plotly.express as px
 import streamlit as st
 
 from .data_model import ColumnMapping
+from .demo_ux import render_how_to_and_quick_demos, render_main_hero
 from .kpis import PeriodKpiSummary
 from .ui_theme import ACCENT, apply_plotly_dashboard_theme
 
@@ -55,29 +56,21 @@ def render_dashboard(
     compare_enabled: bool = False,
     *,
     compact: bool = False,
+    demo_quick_labels: Optional[list[str]] = None,
 ) -> None:
     chart_h = 220 if compact else 320
     _sec_cls = "vd-section compact" if compact else "vd-section"
 
-    if compact:
-        st.markdown("### KPI Dashboard Demo")
-    else:
-        st.title("KPI Dashboard Demo")
-    st.markdown(
-        "See **revenue or spend**, **volume / conversions**, and **orders or CTR** at a glance, "
-        "with trends and a plain-language **“what changed?”** vs the prior period."
-    )
-    st.caption(f"**Profile:** {mapping.profile.capitalize()} · **Trend metric:** {mapping.trend_metric_label}")
-
-    with st.expander("How to use this demo", expanded=False):
-        st.markdown(
-            "- Use the **sidebar** for **dates**, **period compare**, and **minimum rows** guardrails.\n"
-            "- Toggle **Compact layout** for denser screens; enable **OpenAI** (if configured) for richer insight text.\n"
-            "- **Export snapshot** packages KPIs, CSV extracts, and summaries for sharing."
-        )
+    render_main_hero(mapping=mapping, compact=compact)
+    render_how_to_and_quick_demos(demo_labels=list(demo_quick_labels or []))
 
     st.divider()
-    st.markdown(f'<p class="{_sec_cls}">Key metrics</p>', unsafe_allow_html=True)
+
+    st.markdown(
+        f'<p class="{_sec_cls} vd-section-kpi">KPI summary</p>',
+        unsafe_allow_html=True,
+    )
+    st.caption("Primary metrics for the selected date range (deltas show when **Compare with previous period** is on).")
 
     if current.kpis_suppressed:
         st.warning(
@@ -134,6 +127,8 @@ def render_dashboard(
         )
 
     st.divider()
+    st.markdown(f'<p class="{_sec_cls}">Charts</p>', unsafe_allow_html=True)
+    st.caption("Hover points and bars for exact values.")
     st.markdown(f'<p class="{_sec_cls}">Trend</p>', unsafe_allow_html=True)
     if not current.trend.empty:
         trend_fig = px.line(current.trend, x="date", y="value", markers=False)
