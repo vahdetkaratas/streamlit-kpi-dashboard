@@ -37,6 +37,27 @@ from src.ui_theme import inject_vercel_demo_theme
 from src.version import get_app_version
 
 
+def _render_welcome_empty_state(sources: dict[str, Path]) -> None:
+    """Shown when no CSV is loaded yet (portfolio onboarding)."""
+    demo_names = list(sources.keys())
+    first = demo_names[0] if demo_names else "Demo Sales"
+    st.title("KPI Dashboard Demo")
+    st.markdown(
+        "Turn **sales or marketing CSVs** into clear KPIs, trend and breakdown charts, "
+        "and a short **“what changed?”** summary—so performance is obvious in seconds."
+    )
+    st.markdown("### How to use this demo")
+    st.markdown(
+        "- **Use sample data** — click the button below or choose **Demo Sales** / **Demo Marketing** in the sidebar.\n"
+        "- **Or upload** your file: sidebar **Dataset → Upload CSV**.\n"
+        "- Then use the sidebar for **dates**, **compare**, and **export**; the main area shows **KPIs**, **charts**, and **insights**."
+    )
+    if st.button("Use sample data", type="primary", use_container_width=False):
+        st.session_state["kpi_dataset_choice"] = first
+        st.rerun()
+    st.caption("After data loads, controls stay in the **sidebar** → scroll up if needed.")
+
+
 def _date_input_range(label: str, min_date: pd.Timestamp, max_date: pd.Timestamp) -> tuple[pd.Timestamp, pd.Timestamp]:
     value = st.date_input(
         label, value=(min_date.date(), max_date.date()), min_value=min_date.date(), max_value=max_date.date()
@@ -53,16 +74,24 @@ def _date_input_range(label: str, min_date: pd.Timestamp, max_date: pd.Timestamp
 
 
 def run_dashboard_app() -> None:
-    st.set_page_config(page_title="KPI Dashboard App", layout="wide")
+    st.set_page_config(page_title="KPI Dashboard Demo", layout="wide")
     inject_vercel_demo_theme()
     load_dotenv()
     app_version = get_app_version()
     log_event("app_started", app_version=app_version)
 
-    st.sidebar.title("Data input")
-    st.sidebar.caption(f"Version: v{app_version}")
+    st.sidebar.title("Data")
+    st.sidebar.caption(f"v{app_version}")
     sources = get_demo_sources()
-    choice = st.sidebar.radio("Dataset", list(sources.keys()) + ["Upload CSV"])
+    _dataset_options = list(sources.keys()) + ["Upload CSV"]
+    if "kpi_dataset_choice" not in st.session_state:
+        st.session_state["kpi_dataset_choice"] = _dataset_options[0]
+    choice = st.sidebar.radio(
+        "Dataset",
+        _dataset_options,
+        key="kpi_dataset_choice",
+        help="Built-in demos or your own CSV (max 25 MB).",
+    )
 
     df_raw = None
     if choice in sources:
@@ -107,7 +136,7 @@ def run_dashboard_app() -> None:
                 st.stop()
 
     if df_raw is None:
-        st.info("Select a demo dataset or upload your own CSV to generate the KPI dashboard.")
+        _render_welcome_empty_state(sources)
         st.stop()
 
     columns = [str(c) for c in df_raw.columns]
@@ -231,14 +260,15 @@ def run_dashboard_app() -> None:
 
     validation_report: dict = {}
     try:
-        df, validation_report = validate_and_prepare_dataset(df_raw, mapping, min_date_parse_ratio=0.8)
-        log_event(
-            "validation_success",
-            profile=mapping.profile,
-            rows_input=int(len(df_raw)),
-            rows_after_date_parse=int(validation_report.get("rows_after_date_parse", len(df))),
-            date_parse_ratio=validation_report.get("date_parse_ratio"),
-        )
+        with st.spinner("Processing data…"):
+            df, validation_report = validate_and_prepare_dataset(df_raw, mapping, min_date_parse_ratio=0.8)
+            log_event(
+                "validation_success",
+                profile=mapping.profile,
+                rows_input=int(len(df_raw)),
+                rows_after_date_parse=int(validation_report.get("rows_after_date_parse", len(df))),
+                date_parse_ratio=validation_report.get("date_parse_ratio"),
+            )
     except ValidationError as e:
         error_id = new_error_id()
         log_event("validation_failed", error_id=error_id, message=e.message, report=e.report)
@@ -287,13 +317,6 @@ def run_dashboard_app() -> None:
         help="0 = no minimum. Fewer rows than this in a period hides KPI values and charts for that period only.",
     )
 
-    current_summary = compute_period_summary(
-        df, mapping, start_date, end_date, min_rows_for_kpis=min_rows_for_kpis
-    )
-    previous_summary = compute_period_summary(
-        df, mapping, previous_start, previous_end, min_rows_for_kpis=min_rows_for_kpis
-    )
-
     st.sidebar.title("Display")
     compact_layout = st.sidebar.checkbox(
         "Compact layout (screenshare)",
@@ -320,16 +343,23 @@ def run_dashboard_app() -> None:
             "**not** raw CSV rows."
         )
 
-    ai_text = rule_based_what_changed(current_summary, previous_summary, tone=insight_tone)
-    if use_openai:
-        try:
-            ai_text = openai_what_changed(current_summary, previous_summary, tone=insight_tone)
-            log_event("ai_insight_mode", mode="openai", insight_tone=insight_tone)
-        except Exception:
-            ai_text = rule_based_what_changed(current_summary, previous_summary, tone=insight_tone)
-            log_event("ai_insight_mode", mode="rule_fallback_after_openai_failure", insight_tone=insight_tone)
-    else:
-        log_event("ai_insight_mode", mode="rule_default", insight_tone=insight_tone)
+    with st.spinner("Processing data…"):
+        current_summary = compute_period_summary(
+            df, mapping, start_date, end_date, min_rows_for_kpis=min_rows_for_kpis
+        )
+        previous_summary = compute_period_summary(
+            df, mapping, previous_start, previous_end, min_rows_for_kpis=min_rows_for_kpis
+        )
+        ai_text = rule_based_what_changed(current_summary, previous_summary, tone=insight_tone)
+        if use_openai:
+            try:
+                ai_text = openai_what_changed(current_summary, previous_summary, tone=insight_tone)
+                log_event("ai_insight_mode", mode="openai", insight_tone=insight_tone)
+            except Exception:
+                ai_text = rule_based_what_changed(current_summary, previous_summary, tone=insight_tone)
+                log_event("ai_insight_mode", mode="rule_fallback_after_openai_failure", insight_tone=insight_tone)
+        else:
+            log_event("ai_insight_mode", mode="rule_default", insight_tone=insight_tone)
 
     render_dashboard(
         current=current_summary,

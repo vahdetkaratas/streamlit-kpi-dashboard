@@ -57,17 +57,27 @@ def render_dashboard(
     compact: bool = False,
 ) -> None:
     chart_h = 220 if compact else 320
+    _sec_cls = "vd-section compact" if compact else "vd-section"
+
     if compact:
-        st.markdown(
-            "<style>"
-            "h3.compact-section { font-size: 1.05rem !important; margin-top: 0.35rem; margin-bottom: 0.2rem; }"
-            "</style>",
-            unsafe_allow_html=True,
-        )
-        st.markdown("### KPI Dashboard")
+        st.markdown("### KPI Dashboard Demo")
     else:
-        st.title("KPI Dashboard")
-    st.caption(f"Profile: {mapping.profile.capitalize()} • Trend metric: {mapping.trend_metric_label}")
+        st.title("KPI Dashboard Demo")
+    st.markdown(
+        "See **revenue or spend**, **volume / conversions**, and **orders or CTR** at a glance, "
+        "with trends and a plain-language **“what changed?”** vs the prior period."
+    )
+    st.caption(f"**Profile:** {mapping.profile.capitalize()} · **Trend metric:** {mapping.trend_metric_label}")
+
+    with st.expander("How to use this demo", expanded=False):
+        st.markdown(
+            "- Use the **sidebar** for **dates**, **period compare**, and **minimum rows** guardrails.\n"
+            "- Toggle **Compact layout** for denser screens; enable **OpenAI** (if configured) for richer insight text.\n"
+            "- **Export snapshot** packages KPIs, CSV extracts, and summaries for sharing."
+        )
+
+    st.divider()
+    st.markdown(f'<p class="{_sec_cls}">Key metrics</p>', unsafe_allow_html=True)
 
     if current.kpis_suppressed:
         st.warning(
@@ -88,38 +98,42 @@ def render_dashboard(
             "Revenue",
             _format_money(current.totals.get("Revenue")),
             _format_delta(current.totals.get("Revenue"), prev_totals.get("Revenue"), kind="money"),
+            help="Total revenue summed over the selected date range.",
         )
         c2.metric(
             "Volume",
             None if current.totals.get("Volume") is None else f"{current.totals.get('Volume'):,.0f}",
             _format_delta(current.totals.get("Volume"), prev_totals.get("Volume"), kind="count"),
+            help="Sum of the mapped volume column (e.g. units), if present.",
         )
         c3.metric(
-            "Orders / Rows",
+            "Orders",
             None if current.totals.get("Orders") is None else f"{current.totals.get('Orders'):,.0f}",
             _format_delta(current.totals.get("Orders"), prev_totals.get("Orders"), kind="count"),
+            help="Distinct order IDs if mapped; otherwise row count in range.",
         )
     else:
         c1.metric(
             "Spend",
             _format_money(current.totals.get("Spend")),
             _format_delta(current.totals.get("Spend"), prev_totals.get("Spend"), kind="money"),
+            help="Total advertising or campaign spend in the selected period.",
         )
         c2.metric(
             "Conversions",
             None if current.totals.get("Conversions") is None else f"{current.totals.get('Conversions'):,.0f}",
             _format_delta(current.totals.get("Conversions"), prev_totals.get("Conversions"), kind="count"),
+            help="Conversion count (e.g. leads or purchases) from your mapped column.",
         )
         ctr = current.totals.get("CTR")
         c3.metric(
-            "CTR",
+            "CTR (conversion rate from clicks)",
             _format_percent(ctr),
             _format_delta(ctr, prev_totals.get("CTR"), kind="percent_point"),
+            help="Clicks ÷ impressions when both columns are available and impressions > 0.",
         )
 
     st.divider()
-
-    _sec_cls = "vd-section compact" if compact else "vd-section"
     st.markdown(f'<p class="{_sec_cls}">Trend</p>', unsafe_allow_html=True)
     if not current.trend.empty:
         trend_fig = px.line(current.trend, x="date", y="value", markers=False)

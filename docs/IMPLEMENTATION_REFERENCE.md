@@ -26,7 +26,7 @@ kpi-dashboard-app/
 │   ├── metric_guardrails.py # safe ratios (e.g. CTR), finite checks
 │   ├── kpis.py             # KPI computation
 │   ├── dashboard.py        # Streamlit UI sections / Plotly figures
-│   ├── ui_theme.py         # light UI shell + indigo accent; Plotly styling
+│   ├── ui_theme.py         # layout-shell palette (Poppins, dark, amber); Plotly styling
 │   ├── ai_insight.py       # "what changed?" (LLM + rule fallback)
 │   ├── app_flow.py         # Streamlit wiring (sidebar → KPIs → export)
 │   ├── app_support.py      # small pure helpers for app_flow

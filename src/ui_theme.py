@@ -1,27 +1,32 @@
 """
-UI tokens: light, high-contrast shell with the same indigo accent as `vercel_demo`
-(#6366f1). Easier to read than the demo’s near-black page while staying visually related.
+Visual tokens aligned with `layout-shell/styles.css` (portfolio shell):
+Poppins, dark surfaces, amber accent — without embedding the left info-bar layout.
 """
 
 from __future__ import annotations
 
 import plotly.graph_objects as go
 
-# Light theme — prioritise readability (WCAG-friendly contrast on body text)
-BG_PAGE = "#eceff4"
-SURFACE = "#ffffff"
-SURFACE_SUBTLE = "#f5f7fa"
-BORDER = "#d1d7e0"
-TEXT = "#1a1e28"
-MUTED = "#5a6270"
-ACCENT = "#6366f1"
-ACCENT_HOVER = "#4f52d5"
-SUCCESS = "#15803d"
-WARNING = "#b45309"
-DANGER = "#c2410c"
+# layout-shell :root (hex/rgb equivalents)
+DEEP = "#191923"
+CONTENT_BG = "#1e1e28"
+INFO_BAR_BG = "#20202a"
+CARD_A = "#2d2d3a"
+CARD_B = "#2b2b35"
+TEXT_PRIMARY = "#fafafc"
+TEXT_SECONDARY = "#8c8c8e"
+TEXT_TERTIARY = "#646466"
+BORDER_SOFT = "rgba(255, 255, 255, 0.08)"
+SHADOW_1 = "0 3px 8px 0 rgba(15, 15, 20, 0.2)"
+SHADOW_2 = "0 1px 4px 0 rgba(15, 15, 20, 0.1)"
+ACCENT = "#ffc107"
+ACCENT_HOVER = "#e0ac06"
+ACCENT_ON = "#1a1a1f"
+SUCCESS = "#22c55e"
+WARNING = "#eab308"
+DANGER = "#ef4444"
 
-FONT_SANS = "'DM Sans', system-ui, sans-serif"
-FONT_MONO = "'JetBrains Mono', ui-monospace, monospace"
+FONT_SANS = '"Poppins", system-ui, sans-serif'
 
 
 def inject_vercel_demo_theme() -> None:
@@ -32,23 +37,35 @@ def inject_vercel_demo_theme() -> None:
         f"""
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {{
-    --vd-bg: {BG_PAGE};
-    --vd-surface: {SURFACE};
-    --vd-surface-muted: {SURFACE_SUBTLE};
-    --vd-border: {BORDER};
-    --vd-text: {TEXT};
-    --vd-muted: {MUTED};
+    --vd-deep: {DEEP};
+    --vd-content: {CONTENT_BG};
+    --vd-sidebar: {INFO_BAR_BG};
+    --vd-card-a: {CARD_A};
+    --vd-card-b: {CARD_B};
+    --vd-text: {TEXT_PRIMARY};
+    --vd-muted: {TEXT_SECONDARY};
+    --vd-muted2: {TEXT_TERTIARY};
+    --vd-border: {BORDER_SOFT};
     --vd-accent: {ACCENT};
     --vd-accent-hover: {ACCENT_HOVER};
+    --vd-accent-on: {ACCENT_ON};
+    --vd-shadow-1: {SHADOW_1};
+    --vd-shadow-2: {SHADOW_2};
     --vd-success: {SUCCESS};
     --vd-warning: {WARNING};
     --vd-danger: {DANGER};
   }}
-  .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {{
-    background-color: var(--vd-bg) !important;
+  .stApp, [data-testid="stHeader"] {{
+    background-color: var(--vd-deep) !important;
+  }}
+  [data-testid="stAppViewContainer"] {{
+    background-color: var(--vd-deep) !important;
+  }}
+  section.main {{
+    background-color: var(--vd-content) !important;
   }}
   section.main > div {{
     max-width: 1200px;
@@ -59,12 +76,19 @@ def inject_vercel_demo_theme() -> None:
     padding-top: 1.5rem;
     padding-bottom: 2rem;
     font-family: {FONT_SANS};
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: normal;
     color: var(--vd-text);
+    -webkit-font-smoothing: subpixel-antialiased;
   }}
   h1, h2, h3, h4, h5, h6 {{
     font-family: {FONT_SANS} !important;
     color: var(--vd-text) !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: normal !important;
+    font-weight: 600 !important;
+  }}
+  h1 {{
     font-weight: 700 !important;
   }}
   .stMarkdown, .stMarkdown p, .stCaption, [data-testid="stCaption"] {{
@@ -72,6 +96,8 @@ def inject_vercel_demo_theme() -> None:
   }}
   [data-testid="stCaption"] {{
     color: var(--vd-muted) !important;
+    font-size: 0.9rem !important;
+    font-weight: 300 !important;
   }}
   hr {{
     border-color: var(--vd-border) !important;
@@ -83,20 +109,26 @@ def inject_vercel_demo_theme() -> None:
   }}
   a:hover {{
     color: var(--vd-accent-hover) !important;
+    text-shadow: 0 0 3px rgba(250, 250, 252, 0.25);
   }}
   [data-testid="stSidebar"] {{
-    background-color: var(--vd-surface) !important;
+    background: var(--vd-sidebar) !important;
     border-right: 1px solid var(--vd-border) !important;
+    box-shadow: var(--vd-shadow-1);
   }}
   [data-testid="stSidebar"] .block-container {{
     font-family: {FONT_SANS};
-    color: var(--vd-text);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    color: var(--vd-muted);
   }}
   [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {{
     font-size: 1rem !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     text-transform: none !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: normal !important;
     color: var(--vd-text) !important;
     border-bottom: 1px solid var(--vd-border);
     padding-bottom: 0.35rem;
@@ -108,14 +140,15 @@ def inject_vercel_demo_theme() -> None:
   }}
   [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown p {{
     color: var(--vd-muted) !important;
-    font-size: 0.875rem;
+    font-size: 13px !important;
+    font-weight: 300 !important;
   }}
   [data-testid="stMetric"] {{
-    background-color: var(--vd-surface) !important;
+    background: linear-gradient(159deg, rgba(45, 45, 58, 0.95) 0%, rgba(43, 43, 53, 0.95) 100%) !important;
     border: 1px solid var(--vd-border) !important;
     border-radius: 8px !important;
     padding: 0.85rem 1rem !important;
-    box-shadow: 0 1px 2px rgba(26, 30, 40, 0.04);
+    box-shadow: var(--vd-shadow-2);
   }}
   [data-testid="stMetricLabel"] {{
     color: var(--vd-muted) !important;
@@ -125,47 +158,69 @@ def inject_vercel_demo_theme() -> None:
     font-weight: 600 !important;
   }}
   [data-testid="stMetricValue"] {{
-    font-family: {FONT_MONO} !important;
+    font-family: {FONT_SANS} !important;
     color: var(--vd-text) !important;
     font-size: 1.1rem !important;
     font-weight: 600 !important;
   }}
+  section.main [data-testid="stMetric"] {{
+    padding: 1rem 1.15rem !important;
+  }}
+  section.main [data-testid="stMetricValue"] {{
+    font-size: 1.45rem !important;
+    line-height: 1.2 !important;
+  }}
   [data-testid="stMetricDelta"] {{
-    font-family: {FONT_MONO} !important;
+    font-family: {FONT_SANS} !important;
     font-size: 0.8rem !important;
+    font-weight: 400 !important;
   }}
   .stButton > button {{
     font-family: {FONT_SANS} !important;
     font-weight: 600 !important;
     border-radius: 8px !important;
     border: 1px solid var(--vd-border) !important;
-    background-color: var(--vd-surface-muted) !important;
-    color: var(--vd-text) !important;
+    background: linear-gradient(159deg, rgba(45, 45, 58, 0.9) 0%, rgba(43, 43, 53, 0.9) 100%) !important;
+    color: var(--vd-muted) !important;
   }}
   .stButton > button:hover {{
-    border-color: var(--vd-muted) !important;
-    background-color: var(--vd-surface) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: var(--vd-text) !important;
+  }}
+  .stButton > button[kind="primary"],
+  div[data-testid="stButton"] > button[kind="primary"] {{
+    background-color: var(--vd-accent) !important;
+    color: var(--vd-accent-on) !important;
+    border: none !important;
+  }}
+  .stButton > button[kind="primary"]:hover {{
+    background-color: var(--vd-accent-hover) !important;
+    color: var(--vd-accent-on) !important;
   }}
   div[data-testid="stDownloadButton"] > button {{
     font-family: {FONT_SANS} !important;
     font-weight: 600 !important;
     border-radius: 8px !important;
     background-color: var(--vd-accent) !important;
-    color: #fff !important;
+    color: var(--vd-accent-on) !important;
     border: none !important;
   }}
   div[data-testid="stDownloadButton"] > button:hover {{
     background-color: var(--vd-accent-hover) !important;
-    color: #fff !important;
+    color: var(--vd-accent-on) !important;
   }}
   [data-baseweb="input"], [data-baseweb="select"] > div {{
     border-radius: 8px !important;
     border-color: var(--vd-border) !important;
+    background-color: rgba(25, 25, 35, 0.55) !important;
+  }}
+  [data-testid="stSidebar"] input, [data-testid="stSidebar"] textarea {{
+    color: var(--vd-text) !important;
   }}
   .stExpander {{
     border: 1px solid var(--vd-border) !important;
     border-radius: 12px !important;
-    background-color: var(--vd-surface) !important;
+    background: rgba(25, 25, 35, 0.35) !important;
   }}
   .stAlert {{
     border-radius: 10px !important;
@@ -177,7 +232,8 @@ def inject_vercel_demo_theme() -> None:
   iframe[title="streamlit_plotly_chart"] {{
     border-radius: 10px;
     border: 1px solid var(--vd-border);
-    background: var(--vd-surface);
+    background: var(--vd-content);
+    box-shadow: var(--vd-shadow-2);
   }}
   p.vd-section {{
     font-family: {FONT_SANS} !important;
@@ -196,14 +252,16 @@ def inject_vercel_demo_theme() -> None:
   }}
   .vd-insight {{
     font-family: {FONT_SANS};
+    font-weight: 300;
+    font-size: 14px;
     color: var(--vd-text);
     line-height: 1.65;
     padding: 1rem 1.25rem;
-    background: var(--vd-surface);
+    background: linear-gradient(159deg, rgba(45, 45, 58, 0.55) 0%, rgba(43, 43, 53, 0.55) 100%);
     border: 1px solid var(--vd-border);
     border-radius: 12px;
     margin-top: 0.25rem;
-    box-shadow: 0 1px 2px rgba(26, 30, 40, 0.04);
+    box-shadow: var(--vd-shadow-2);
   }}
 </style>
         """,
@@ -212,32 +270,32 @@ def inject_vercel_demo_theme() -> None:
 
 
 def apply_plotly_dashboard_theme(fig: go.Figure, *, height: int, margin: dict) -> None:
-    """Plotly styling to match the light shell."""
+    """Plotly styling to match layout-shell dark content area."""
     fig.update_layout(
         height=height,
         margin=margin,
-        paper_bgcolor=SURFACE,
-        plot_bgcolor=SURFACE_SUBTLE,
-        font=dict(color=TEXT, family="DM Sans, sans-serif", size=12),
+        paper_bgcolor=CONTENT_BG,
+        plot_bgcolor=DEEP,
+        font=dict(color=TEXT_PRIMARY, family="Poppins, sans-serif", size=12),
         xaxis=dict(
-            gridcolor=BORDER,
-            linecolor=BORDER,
-            zerolinecolor=BORDER,
-            tickfont=dict(color=MUTED, size=11),
-            title_font=dict(color=MUTED),
+            gridcolor=BORDER_SOFT,
+            linecolor=BORDER_SOFT,
+            zerolinecolor=BORDER_SOFT,
+            tickfont=dict(color=TEXT_SECONDARY, size=11),
+            title_font=dict(color=TEXT_SECONDARY),
         ),
         yaxis=dict(
-            gridcolor=BORDER,
-            linecolor=BORDER,
-            zerolinecolor=BORDER,
-            tickfont=dict(color=MUTED, size=11),
-            title_font=dict(color=MUTED),
+            gridcolor=BORDER_SOFT,
+            linecolor=BORDER_SOFT,
+            zerolinecolor=BORDER_SOFT,
+            tickfont=dict(color=TEXT_SECONDARY, size=11),
+            title_font=dict(color=TEXT_SECONDARY),
         ),
-        legend=dict(font=dict(color=MUTED), bgcolor="rgba(0,0,0,0)", borderwidth=0),
+        legend=dict(font=dict(color=TEXT_SECONDARY), bgcolor="rgba(0,0,0,0)", borderwidth=0),
         hoverlabel=dict(
-            bgcolor=SURFACE,
-            bordercolor=BORDER,
-            font=dict(family="JetBrains Mono, monospace", size=12, color=TEXT),
+            bgcolor=CARD_A,
+            bordercolor=BORDER_SOFT,
+            font=dict(family="Poppins, sans-serif", size=12, color=TEXT_PRIMARY),
         ),
     )
-    fig.update_layout(title_font=dict(size=13, color=MUTED, family="DM Sans, sans-serif"))
+    fig.update_layout(title_font=dict(size=13, color=TEXT_SECONDARY, family="Poppins, sans-serif"))
