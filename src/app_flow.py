@@ -54,7 +54,6 @@ def _date_input_range(label: str, min_date: pd.Timestamp, max_date: pd.Timestamp
 
 
 def run_dashboard_app() -> None:
-    st.set_page_config(page_title="KPI Dashboard Demo", layout="wide")
     inject_vercel_demo_theme()
     load_dotenv()
     app_version = get_app_version()

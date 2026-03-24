@@ -1,6 +1,6 @@
 # Module boundaries — KPI Dashboard App
 
-This document states **which layer owns what**, so refactors stay predictable. The Streamlit entrypoint is `src/app.py` (minimal); orchestration lives in `src/app_flow.py`.
+This document states **which layer owns what**, so refactors stay predictable. The Streamlit entrypoint is `src/app.py` (minimal: `st.set_page_config` then `run_dashboard_app`); orchestration lives in `src/app_flow.py`.
 
 ---
 

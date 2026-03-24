@@ -32,7 +32,7 @@ kpi-dashboard-app/
 │   ├── app_flow.py         # Streamlit wiring (sidebar → KPIs → export)
 │   ├── app_support.py      # small pure helpers for app_flow
 │   ├── upload_limits.py    # max upload sizes for CSV / preset JSON
-│   └── app.py              # Streamlit entry (calls app_flow)
+│   └── app.py              # Streamlit entry: `st.set_page_config` (first), then `app_flow`
 │
 └── tests/
 ```
