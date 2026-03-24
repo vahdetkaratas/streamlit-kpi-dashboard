@@ -153,6 +153,8 @@ def render_dashboard(
                 title=None if compact else f"Top {mapping.dimension_col} by {mapping.trend_metric_label}",
             )
             fig.update_traces(marker_line_width=0)
+            # Few categories → default bars look like full-width slabs; add gap so reads as a proper bar chart.
+            fig.update_layout(bargap=0.45)
             apply_plotly_dashboard_theme(
                 fig,
                 height=chart_h,

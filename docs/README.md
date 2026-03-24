@@ -1,6 +1,6 @@
 # Documentation
 
-English specifications for the **KPI Dashboard App**.
+English specifications for the **KPI Dashboard App**. All docs and examples stay **English only**—do not add Turkish (or other non-English) product copy here.
 
 ---
 

@@ -11,6 +11,14 @@ import streamlit as st
 
 from .data_model import ColumnMapping
 
+# Apply in app_flow *before* st.radio(..., key="kpi_dataset_choice") — cannot set that key after the radio exists.
+KPI_DATASET_PENDING_KEY = "_kpi_pending_dataset"
+
+
+def _request_dataset_switch(label: str) -> None:
+    st.session_state[KPI_DATASET_PENDING_KEY] = label
+    st.rerun()
+
 
 def render_empty_state_welcome(sources: dict[str, Path]) -> None:
     """Full-width onboarding when no CSV is loaded."""
@@ -24,10 +32,9 @@ def render_empty_state_welcome(sources: dict[str, Path]) -> None:
 
     st.markdown("")
     if st.button("Use sample data", type="primary", use_container_width=True, key="welcome_sample_primary"):
-        st.session_state["kpi_dataset_choice"] = first
-        st.rerun()
+        _request_dataset_switch(first)
 
-    st.caption("Or open the sidebar → **Dataset** to pick a demo or **Upload CSV**.")
+    st.caption("Or open the sidebar → **1 · Data source** to pick a demo or **Upload CSV**.")
 
 
 def render_main_hero(*, mapping: ColumnMapping, compact: bool) -> None:
@@ -47,9 +54,10 @@ def render_how_to_and_quick_demos(*, demo_labels: list[str]) -> None:
         cols = st.columns(min(len(demo_labels), 3))
         for i, name in enumerate(demo_labels[:3]):
             with cols[i]:
-                if st.button(name, key=f"quick_demo_{name}", use_container_width=True):
-                    st.session_state["kpi_dataset_choice"] = name
-                    st.rerun()
+                # Stable widget key (no spaces) — label still shows full name e.g. "Demo Marketing"
+                key_slug = name.replace(" ", "_")
+                if st.button(name, key=f"quick_demo_{key_slug}", use_container_width=True):
+                    _request_dataset_switch(name)
 
 
 def _render_hero_streamlit(
@@ -65,19 +73,20 @@ def _render_hero_streamlit(
 
     if mode == "empty":
         st.markdown(
-            "Upload a CSV or load a sample to explore **KPIs**, **trends**, and a **“what changed?”** summary—"
-            "so business performance is clear without a separate BI stack."
+            "**What this is:** a small demo that turns a sales or marketing CSV into **KPI cards**, **two charts**, "
+            "and a short **“what changed vs last period?”** paragraph—so you can explain performance in one screen."
         )
         st.caption(
-            "Ideal for **sales** and **marketing** exports: one date column plus metrics is enough to get started."
+            "You don’t need every sidebar option on day one: pick data → leave column detection on Auto → choose dates. "
+            "Presets, layout, AI wording, and export are for later or for repeating the same file shape."
         )
     else:
         st.markdown(
-            "Track **money**, **volume or conversions**, and **orders or CTR** for the selected period, "
-            "with optional **compare to the previous period** so you see direction, not just a snapshot."
+            "The numbers below follow **sidebar steps 1–3**: data source, **which column is what**, then **dates + compare**. "
+            "Open the optional expanders only if you need tighter layout, different insight wording, or a shareable ZIP."
         )
         st.caption(
-            "Leaders get a single screen for how we did—then use **Export snapshot** in the sidebar to share numbers."
+            "Default path: scroll the dashboard; change the date range to tell a different story. Export is step **4** when you need artifacts."
         )
 
     if profile_caption:
@@ -87,15 +96,15 @@ def _render_hero_streamlit(
 def _render_guide_columns(*, mode: str) -> None:
     if mode == "empty":
         cards = [
-            ("1 · Data", "Use **Use sample data** above or the sidebar **Dataset** (demos or **Upload CSV**)."),
-            ("2 · Explore", "After load, use sidebar mapping and **date range**; KPIs and charts update on each run."),
-            ("3 · Share", "**Export snapshot** builds a ZIP with CSV extracts, summary, and optional chart PNGs."),
+            ("1 · Data", "**Use sample data** here or sidebar **1 · Data source** (demo or **Upload CSV**)."),
+            ("2 · Meaning", "After load, sidebar **2 · Column meaning**—usually keep **Auto-detect**."),
+            ("3 · Read & share", "Sidebar **3** sets the story (dates / compare). **4 · Export** when you need a ZIP."),
         ]
     else:
         cards = [
-            ("1 · Refine", "Sidebar: **dates**, **compare previous period**, **minimum rows** guardrails."),
-            ("2 · View", "Scan **KPI summary** below, then **Trend** and **Breakdown** charts."),
-            ("3 · Optional", "**Compact layout** for demos; **OpenAI** (if configured) enriches the insight text."),
+            ("1 · Story", "Sidebar **3 · Dates & comparison** defines the period; optional guardrail lives in its expander."),
+            ("2 · Read", "KPI strip → **Trend** → **Breakdown**; the text block summarizes vs the previous period."),
+            ("3 · When needed", "Optional expanders: **layout & insight wording**, **OpenAI** if configured, **4 · Export** for files."),
         ]
     c1, c2, c3 = st.columns(3)
     for col, (title, body) in zip((c1, c2, c3), cards):

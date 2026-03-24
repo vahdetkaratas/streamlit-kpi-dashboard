@@ -16,6 +16,8 @@ Single-page KPI dashboard for CSV-based marketing or sales metrics:
 
 The implementation follows the scope in `docs/` and keeps MVP intentionally narrow.
 
+**Language:** user-visible strings, documentation, and code comments are **English only** (no Turkish in the repo).
+
 ## Quick start
 
 ### 1) Install dependencies

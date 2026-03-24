@@ -33,7 +33,7 @@ from src.upload_limits import (
     require_upload_under,
 )
 from src.validation import ValidationError, validate_and_prepare_dataset
-from src.demo_ux import render_empty_state_welcome
+from src.demo_ux import KPI_DATASET_PENDING_KEY, render_empty_state_welcome
 from src.ui_theme import inject_vercel_demo_theme
 from src.version import get_app_version
 
@@ -60,16 +60,23 @@ def run_dashboard_app() -> None:
     app_version = get_app_version()
     log_event("app_started", app_version=app_version)
 
-    st.sidebar.title("Data")
-    st.sidebar.caption(f"v{app_version}")
+    st.sidebar.caption(f"KPI demo · v{app_version}")
+    st.sidebar.markdown("**1 · Data source**")
+    st.sidebar.caption("Pick a built-in sample or upload your CSV (max 25 MB). Everything below applies after data loads.")
     sources = get_demo_sources()
     _dataset_options = list(sources.keys()) + ["Upload CSV"]
     if "kpi_dataset_choice" not in st.session_state:
+        st.session_state["kpi_dataset_choice"] = _dataset_options[0]
+    _pending = st.session_state.pop(KPI_DATASET_PENDING_KEY, None)
+    if _pending in _dataset_options:
+        st.session_state["kpi_dataset_choice"] = _pending
+    elif st.session_state["kpi_dataset_choice"] not in _dataset_options:
         st.session_state["kpi_dataset_choice"] = _dataset_options[0]
     choice = st.sidebar.radio(
         "Dataset",
         _dataset_options,
         key="kpi_dataset_choice",
+        label_visibility="collapsed",
         help="Built-in demos or your own CSV (max 25 MB).",
     )
 
@@ -121,6 +128,13 @@ def run_dashboard_app() -> None:
 
     columns = [str(c) for c in df_raw.columns]
 
+    st.sidebar.divider()
+    st.sidebar.markdown("**2 · Column meaning**")
+    st.sidebar.caption(
+        "Tells the app which column is the date and which is revenue/spend. **Auto-detect** is enough for most demos; "
+        "use **Manual** if KPIs look wrong, or **preset** if you reuse the same CSV shape often."
+    )
+
     auto_mapping_error: str | None = None
     try:
         auto_mapping: ColumnMapping = infer_mapping(df_raw)
@@ -130,10 +144,14 @@ def run_dashboard_app() -> None:
         auto_mapping = None
         log_event("mapping_auto_failed", error=auto_mapping_error)
 
-    st.sidebar.title("Column mapping")
     _mode_options = ["Auto-detect", "Manual mapping", "Upload preset (JSON)", "Saved preset"]
     _default_mode_index = 1 if auto_mapping_error else 0
-    mapping_mode = st.sidebar.radio("Mapping mode", _mode_options, index=_default_mode_index)
+    mapping_mode = st.sidebar.radio(
+        "How to set columns",
+        _mode_options,
+        index=_default_mode_index,
+        help="Auto = infer from headers. Manual = pick each role. Presets = JSON you saved or uploaded before.",
+    )
 
     mapping: ColumnMapping | None = None
 
@@ -260,8 +278,7 @@ def run_dashboard_app() -> None:
         st.error(f"Could not validate the dataset. Error ID: {error_id}")
         st.stop()
 
-    st.sidebar.title("Mapping preset")
-    with st.sidebar.expander("Save current mapping", expanded=False):
+    with st.sidebar.expander("Save this column setup for reuse (optional)", expanded=False):
         preset_name = st.text_input("Preset name (saved under artifacts/mapping_presets/)", key="mapping_preset_name_input")
         if st.button("Save mapping preset", key="mapping_preset_save_btn"):
             name_stripped = (preset_name or "").strip()
@@ -282,46 +299,54 @@ def run_dashboard_app() -> None:
     min_date = df[mapping.date_col].min()
     max_date = df[mapping.date_col].max()
 
-    st.sidebar.title("Date range")
-    start_date, end_date = _date_input_range("Filter", min_date, max_date)
+    st.sidebar.divider()
+    st.sidebar.markdown("**3 · Dates & comparison**")
+    st.sidebar.caption(
+        "The main area only shows rows inside this range. “Previous period” is the same length of time, ending the day before your start date."
+    )
+    start_date, end_date = _date_input_range("Date range", min_date, max_date)
 
     previous_start, previous_end = compute_previous_period(start_date, end_date)
     compare_enabled = st.sidebar.checkbox("Compare with previous period", value=True)
 
-    min_rows_for_kpis = st.sidebar.number_input(
-        "Minimum rows in period for KPIs",
-        min_value=0,
-        max_value=50_000,
-        value=1,
-        step=1,
-        help="0 = no minimum. Fewer rows than this in a period hides KPI values and charts for that period only.",
-    )
-
-    st.sidebar.title("Display")
-    compact_layout = st.sidebar.checkbox(
-        "Compact layout (screenshare)",
-        value=False,
-        help="Smaller chart heights and tighter headings to fit more on one screen.",
-    )
-
-    st.sidebar.title("AI insight")
-    _insight_tone_options: tuple[InsightTone, ...] = ("neutral", "executive", "brief")
-    insight_tone: InsightTone = st.sidebar.selectbox(
-        "Insight tone",
-        _insight_tone_options,
-        index=0,
-        help="Wording only — the same KPI facts are used for every tone.",
-    )
-    use_openai = st.sidebar.checkbox(
-        "Use OpenAI (enhanced 'what changed?' text)",
-        value=False,
-        disabled=not bool(os.getenv("OPENAI_API_KEY")),
-    )
-    if os.getenv("OPENAI_API_KEY"):
-        st.sidebar.caption(
-            "OpenAI sees **only pre-aggregated KPIs** from this session (totals, dates, top breakdown)—"
-            "**not** raw CSV rows."
+    with st.sidebar.expander("Data quality guardrail (optional)", expanded=False):
+        st.caption(
+            "If a period has very few rows, you may want to hide KPIs so partial weeks don’t look like full performance."
         )
+        min_rows_for_kpis = st.number_input(
+            "Minimum rows in period for KPIs",
+            min_value=0,
+            max_value=50_000,
+            value=1,
+            step=1,
+            help="0 = no minimum. Fewer rows than this in a period hides KPI values and charts for that period only.",
+        )
+
+    st.sidebar.divider()
+    with st.sidebar.expander("Layout & “what changed?” text (optional)", expanded=False):
+        st.caption("Skip until you’re presenting or tweaking the narrative. Default view is already usable.")
+        compact_layout = st.checkbox(
+            "Compact layout (screenshare)",
+            value=False,
+            help="Smaller chart heights and tighter headings to fit more on one screen.",
+        )
+        _insight_tone_options: tuple[InsightTone, ...] = ("neutral", "executive", "brief")
+        insight_tone: InsightTone = st.selectbox(
+            "Insight tone",
+            _insight_tone_options,
+            index=0,
+            help="Wording only — the same KPI facts are used for every tone.",
+        )
+        use_openai = st.checkbox(
+            "Use OpenAI (enhanced 'what changed?' text)",
+            value=False,
+            disabled=not bool(os.getenv("OPENAI_API_KEY")),
+        )
+        if os.getenv("OPENAI_API_KEY"):
+            st.caption(
+                "OpenAI sees **only pre-aggregated KPIs** from this session (totals, dates, top breakdown)—"
+                "**not** raw CSV rows."
+            )
 
     with st.spinner("Processing data..."):
         current_summary = compute_period_summary(
@@ -351,7 +376,9 @@ def run_dashboard_app() -> None:
         demo_quick_labels=list(sources.keys()),
     )
 
-    st.sidebar.title("Export")
+    st.sidebar.divider()
+    st.sidebar.markdown("**4 · Export**")
+    st.sidebar.caption("Optional: package numbers, small extracts, and chart images into a folder and ZIP for sharing.")
     if "last_snapshot_dir" not in st.session_state:
         st.session_state["last_snapshot_dir"] = None
     st.session_state.pop("last_snapshot_zip", None)
