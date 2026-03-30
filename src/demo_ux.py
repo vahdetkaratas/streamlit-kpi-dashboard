@@ -1,7 +1,4 @@
-"""
-Portfolio demo copy and layout: hero text, step guidance, quick dataset picks.
-Uses Streamlit primitives only (no custom HTML shells).
-"""
+"""Streamlit hero, onboarding copy, and quick dataset switches (no custom HTML)."""
 
 from __future__ import annotations
 
