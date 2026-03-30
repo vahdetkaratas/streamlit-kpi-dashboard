@@ -4,7 +4,7 @@ Single-page **Streamlit** dashboard for **sales or marketing** CSVs: built-in de
 
 **Stack:** pandas, Plotly, Streamlit. Optional **OpenAI** only sees aggregated KPI context when enabled—not raw rows.
 
-**Live demo:** [forecasting.vahdetkaratas.com](https://forecasting.vahdetkaratas.com/)
+**Live demo:** [kpi-dashboard.vahdetkaratas.com](https://kpi-dashboard.vahdetkaratas.com/)
 
 ## Run
 
