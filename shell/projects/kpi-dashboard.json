@@ -190,8 +190,65 @@
           "external": true
         }
       ],
-      "relatedMlSystems": [],
-      "relatedDataTools": []
+      "relatedMlSystems": [
+        {
+          "label": "Portfolio",
+          "href": "https://vahdetkaratas.com/portfolio",
+          "external": true
+        },
+        {
+          "label": "Batch scoring",
+          "href": "https://batch-scoring.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Feature store",
+          "href": "https://feature-store.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Vahdetlabs",
+          "href": "https://vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Monitoring & data quality",
+          "href": "https://monitoring.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Customer churn prediction",
+          "href": "https://churn.vahdetlabs.com/",
+          "external": true
+        }
+      ],
+      "relatedDataTools": [
+        {
+          "label": "Data cleaning toolkit",
+          "href": "https://data-cleaning.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "EDA report generator",
+          "href": "https://eda-report.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Forecasting demo",
+          "href": "https://forecasting.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "CSV analytics",
+          "href": "https://ai-analysis.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "KPI dashboard",
+          "href": "https://kpi-dashboard.vahdetlabs.com/",
+          "external": true
+        }
+      ]
     }
   }
 }
