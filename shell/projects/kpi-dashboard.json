@@ -20,7 +20,7 @@
   "projectLinks": [
     {
       "label": "Open live app",
-      "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+      "href": "https://kpi.vahdetkaratas.com/",
       "external": true
     },
     {
@@ -32,7 +32,7 @@
   "reviewLinks": [
     {
       "label": "Open live app",
-      "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+      "href": "https://kpi.vahdetkaratas.com/",
       "external": true
     },
     {
@@ -59,7 +59,7 @@
         },
         {
           "label": "Open live app",
-          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "href": "https://kpi.vahdetkaratas.com/",
           "external": true
         },
         {
@@ -159,7 +159,7 @@
       "projectLinks": [
         {
           "label": "Open live app",
-          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "href": "https://kpi.vahdetkaratas.com/",
           "external": true
         },
         {
@@ -176,7 +176,7 @@
       "reviewLinks": [
         {
           "label": "Open live app",
-          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "href": "https://kpi.vahdetkaratas.com/",
           "external": true
         },
         {
