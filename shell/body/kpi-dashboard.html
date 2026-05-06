@@ -1,0 +1,121 @@
+<section class="proj-section" aria-labelledby="overview-heading">
+  <h2 id="overview-heading">Overview</h2>
+  <div class="proj-prose">
+    <p><strong>Problem.</strong> Sales and marketing teams often live in spreadsheets and CSV exports. Leadership still needs a repeatable KPI read—totals, a trend, and a simple dimensional cut—without standing up a full BI program for every iteration.</p>
+    <p><strong>Approach.</strong> A single Streamlit surface ingests a CSV (or built-in demos), normalizes dates and metrics with pandas, validates shape coverage, then renders KPI cards, a trend series, and an optional breakdown chart in Plotly. A short rule-based “what changed?” summary compares the selected range to the prior window when enabled.</p>
+    <p><strong>Scope.</strong> The app optimizes for clarity and guardrails on small-to-medium files, not for enterprise semantic layers or scheduled warehouse pushes.</p>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="flow-heading">
+  <h2 id="flow-heading">Workflow</h2>
+  <p class="proj-section-intro">Path from file to dashboard:</p>
+  <div class="proj-arch-visual" aria-label="High-level workflow">
+    <span class="proj-arch-node">CSV / demo</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Column mapping</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Validation</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Aggregates</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Streamlit + Plotly</span>
+  </div>
+  <ol class="proj-steps">
+    <li class="proj-step">
+      <span class="proj-step-num">1</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Choose data</h3>
+        <p>Pick a built-in sales or marketing sample, or upload a CSV within the host’s size limits.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">2</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Map columns</h3>
+        <p>Auto-detect when headers are clean; fall back to manual selection or JSON presets when the same export repeats.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">3</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Validate and filter</h3>
+        <p>Parsing ratios and numeric coercion are checked before charts render; date filters scope the window shown.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">4</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Review and export</h3>
+        <p>Scan KPIs and charts, then optionally export a snapshot folder and ZIP for email or slides.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section class="proj-section" aria-labelledby="features-heading">
+  <h2 id="features-heading">Features</h2>
+  <div class="proj-card-grid">
+    <div class="proj-card">
+      <h3 class="proj-card-title">KPI cards</h3>
+      <p>Profile-aware metrics (sales vs marketing) with optional deltas against the previous period.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Trend and breakdown</h3>
+      <p>Plotly line trend plus categorical breakdown when a dimension column is available.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Column mapping and presets</h3>
+      <p>Manual overrides and JSON presets reduce rework on recurring export layouts.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Validation layer</h3>
+      <p>Explicit checks on dates and numerics before surfacing misleading charts.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Snapshot export</h3>
+      <p>Bundle metadata, extracts, insight text, and chart images when enabled—useful for async reviews.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Optional insight wording</h3>
+      <p>Rule-based narrative by default; optional OpenAI uses aggregated KPIs only when configured server-side.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="stack-heading">
+  <h2 id="stack-heading">Tech stack</h2>
+  <ul class="proj-tech-list">
+    <li><strong>App shell:</strong> Streamlit (single-page orchestration)</li>
+    <li><strong>Data layer:</strong> pandas for typing, grouping, and validation helpers</li>
+    <li><strong>Charts:</strong> Plotly figures with a light template for readability</li>
+    <li><strong>Runtime:</strong> Python 3.11; container entry runs Streamlit on port 8501</li>
+    <li><strong>Optional:</strong> OpenAI client for enhanced copy—not a mandatory dependency for core charts</li>
+  </ul>
+</section>
+
+<section class="proj-section" aria-labelledby="deploy-heading">
+  <h2 id="deploy-heading">Deployment / live app</h2>
+  <div class="proj-prose">
+    <p>The canonical interactive deployment is the Streamlit host at <a href="https://kpi-dashboard-app.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer"><strong>kpi-dashboard-app.vahdetkaratas.com</strong></a>. This static shell only frames the project; it does not proxy API traffic.</p>
+    <p>Source and run instructions: <a href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer">GitHub repository</a> (<code>streamlit run src/app.py</code>, Docker optional).</p>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="limitations-body-heading">
+  <h2 id="limitations-body-heading">Limitations</h2>
+  <div class="proj-prose">
+    <ul>
+      <li>Not a substitute for governed BI catalogs, row-level security, or scheduled enterprise ETL.</li>
+      <li>Performance and upload caps target practical demos—not billion-row warehouses.</li>
+      <li>Refreshing data requires a new load or interaction in the Streamlit session; there is no push pipeline here.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="value-heading">
+  <h2 id="value-heading">Why this project</h2>
+  <div class="proj-prose">
+    <p>It demonstrates how far you can get with a tight pandas + Streamlit loop: honest validation, charts people actually read, and exports stakeholders can file away—without overselling depth the codebase does not provide.</p>
+  </div>
+</section>

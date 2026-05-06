@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Streamlit KPI dashboard for CSV exports: pandas transforms, Plotly charts, mapping presets, snapshot ZIP export, optional compare-to-previous-period summaries.">
+  <meta name="theme-color" content="#0a0c10">
+  <title>KPI Dashboard — applied data product</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Poppins:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="shell.css">
+  <link rel="stylesheet" href="demo-content.css">
+</head>
+<body>
+  <div class="shell-outer">
+    <div class="shell-card">
+      <div class="art-info-bar">
+        <div class="art-info-bar-frame">
+          <div class="art-info-bar-header">
+            <button type="button" class="art-info-bar-btn" aria-label="Toggle info" aria-expanded="false">
+              <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="art-header">
+            <div class="art-avatar">
+              <a href="https://vahdetkaratas.com/" class="art-avatar-curtain">
+                <img src="https://vahdetkaratas.com/img/face-1.jpg" alt="Vahdettin Karatas" width="90" height="90">
+                <i class="fas fa-expand" aria-hidden="true"></i>
+              </a>
+              <div class="art-lamp-light">
+                <div class="art-available-lamp"></div>
+              </div>
+            </div>
+            <h5 class="art-name mb-10"><a href="https://vahdetkaratas.com/">Vahdettin Karatas</a></h5>
+            <div class="art-sm-text">Applied ML / data engineer — production systems, analytics, APIs</div>
+            
+          </div>
+
+          <div id="scrollbar2" class="art-scroll-frame">
+            <div class="art-table p-15-15">
+              <ul>
+                <li><h6>Location:</h6><span>Prague, Czech Republic</span></li>
+              </ul>
+            </div>
+
+            <div class="art-ls-divider"></div>
+
+            <div class="art-knowledge-block p-30-15">
+              <h6 class="mb-15">Technical focus</h6>
+              <ul class="art-knowledge-list p-15-0">
+                <li>ML systems and delivery</li>
+<li>Batch scoring</li>
+<li>Feature workflows</li>
+<li>Monitoring and validation</li>
+<li>APIs and reproducible tooling</li>
+              </ul>
+            </div>
+
+            <div class="art-knowledge-block p-30-15">
+              <h6 class="mb-15">For hiring review</h6>
+              <ul class="art-knowledge-list p-15-0">
+                <li><a href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer">GitHub repository</a></li>
+<li><a href="https://rag-qa.vahdetkaratas.com/docs" target="_blank" rel="noopener noreferrer">API docs</a></li>
+<li><a href="https://vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">CV / profile</a></li>
+<li><a href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer">Architecture notes</a></li>
+              </ul>
+            </div>
+
+            <div class="art-knowledge-block p-30-15"><h6 class="mb-15">ML systems</h6><ul class="art-knowledge-list p-15-0"><li><a href="https://vahdetkaratas.com/portfolio" target="_blank" rel="noopener noreferrer">Portfolio</a></li>
+<li><a href="https://batch-scoring.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">Batch scoring</a></li>
+<li><a href="https://feature-store.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">Feature store</a></li>
+<li><a href="https://vahdetlabs.com/" target="_blank" rel="noopener noreferrer">Vahdetlabs</a></li>
+<li><a href="https://monitoring.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">Monitoring &amp; data quality</a></li>
+<li><a href="https://churn.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">Customer churn prediction</a></li></ul></div><div class="art-knowledge-block p-30-15"><h6 class="mb-15">Data tools</h6><ul class="art-knowledge-list p-15-0"><li><a href="https://data-cleaning.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">Data cleaning toolkit</a></li>
+<li><a href="https://eda-report.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">EDA report generator</a></li>
+<li><a href="https://forecasting.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">Forecasting demo</a></li>
+<li><a href="https://ai-analysis.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">CSV analytics</a></li>
+<li><a href="https://kpi-dashboard.vahdetlabs.com/" target="_blank" rel="noopener noreferrer">KPI dashboard</a></li></ul></div>
+          </div>
+
+          <div class="art-ls-social">
+            <a href="https://github.com/vahdetkaratas" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://linkedin.com/in/vahdetkaratas" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shell-main-wrap" id="shellMainWrap">
+        <div class="shell-mobile-curtain" id="shellMobileCurtain" aria-hidden="true"></div>
+        <div class="shell-main">
+          <main class="shell-scroll" id="shellScroll">
+            <div class="shell-content" id="projectContent">
+              <div class="batch-page kpi-shell">
+                <a class="skip" href="#main">Skip to content</a>
+
+                <div class="wrap">
+                  <header>
+                    <div class="logo" id="top">KPI <span>Dashboard</span></div>
+                    <div class="nav-actions">
+                      <a class="btn btn-primary" href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a>
+<a class="btn btn-ghost" href="https://kpi-dashboard-app.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">Open live app</a>
+<a class="btn btn-ghost" href="https://vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">CV / profile</a>
+                    </div>
+                  </header>
+
+                  <div id="main">
+                    <section class="hero">
+                      <span class="hero-badge">Proof-of-work · data product</span>
+                      <h1>CSV to leadership-ready KPIs</h1>
+                      <p class="hero-lead">End-to-end CSV KPI workflow I can operate and extend: infer or manual column mapping, pandas-backed validation, Plotly trend and breakdown views, optional previous-period deltas, and exportable snapshot bundles for handoff. Scope stays honest—single-page Streamlit, not a BI platform.</p>
+                      <div class="hero-cta">
+                        <a class="btn btn-primary" href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a>
+<a class="btn btn-ghost" href="https://kpi-dashboard-app.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">Open live app</a>
+<a class="btn btn-ghost" href="https://vahdetkaratas.com/" target="_blank" rel="noopener noreferrer">CV / profile</a>
+                      </div>
+                      <p class="hero-note">Static portfolio wrapper; open the Streamlit host to exercise uploads, mapping presets, and exports.</p>
+                      <div class="metrics" aria-label="Project facts">
+                        <div><span>Streamlit</span></div>
+<div><span>pandas</span></div>
+<div><span>Plotly</span></div>
+<div><span>Python 3.11</span></div>
+                      </div>
+                    </section>
+
+                    
+
+                    <section class="proj-section" aria-labelledby="overview-heading">
+  <h2 id="overview-heading">Overview</h2>
+  <div class="proj-prose">
+    <p><strong>Problem.</strong> Sales and marketing teams often live in spreadsheets and CSV exports. Leadership still needs a repeatable KPI read—totals, a trend, and a simple dimensional cut—without standing up a full BI program for every iteration.</p>
+    <p><strong>Approach.</strong> A single Streamlit surface ingests a CSV (or built-in demos), normalizes dates and metrics with pandas, validates shape coverage, then renders KPI cards, a trend series, and an optional breakdown chart in Plotly. A short rule-based “what changed?” summary compares the selected range to the prior window when enabled.</p>
+    <p><strong>Scope.</strong> The app optimizes for clarity and guardrails on small-to-medium files, not for enterprise semantic layers or scheduled warehouse pushes.</p>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="flow-heading">
+  <h2 id="flow-heading">Workflow</h2>
+  <p class="proj-section-intro">Path from file to dashboard:</p>
+  <div class="proj-arch-visual" aria-label="High-level workflow">
+    <span class="proj-arch-node">CSV / demo</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Column mapping</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Validation</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Aggregates</span>
+    <span class="proj-arch-arrow" aria-hidden="true">→</span>
+    <span class="proj-arch-node">Streamlit + Plotly</span>
+  </div>
+  <ol class="proj-steps">
+    <li class="proj-step">
+      <span class="proj-step-num">1</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Choose data</h3>
+        <p>Pick a built-in sales or marketing sample, or upload a CSV within the host’s size limits.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">2</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Map columns</h3>
+        <p>Auto-detect when headers are clean; fall back to manual selection or JSON presets when the same export repeats.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">3</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Validate and filter</h3>
+        <p>Parsing ratios and numeric coercion are checked before charts render; date filters scope the window shown.</p>
+      </div>
+    </li>
+    <li class="proj-step">
+      <span class="proj-step-num">4</span>
+      <div class="proj-step-body">
+        <h3 class="proj-step-title">Review and export</h3>
+        <p>Scan KPIs and charts, then optionally export a snapshot folder and ZIP for email or slides.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section class="proj-section" aria-labelledby="features-heading">
+  <h2 id="features-heading">Features</h2>
+  <div class="proj-card-grid">
+    <div class="proj-card">
+      <h3 class="proj-card-title">KPI cards</h3>
+      <p>Profile-aware metrics (sales vs marketing) with optional deltas against the previous period.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Trend and breakdown</h3>
+      <p>Plotly line trend plus categorical breakdown when a dimension column is available.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Column mapping and presets</h3>
+      <p>Manual overrides and JSON presets reduce rework on recurring export layouts.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Validation layer</h3>
+      <p>Explicit checks on dates and numerics before surfacing misleading charts.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Snapshot export</h3>
+      <p>Bundle metadata, extracts, insight text, and chart images when enabled—useful for async reviews.</p>
+    </div>
+    <div class="proj-card">
+      <h3 class="proj-card-title">Optional insight wording</h3>
+      <p>Rule-based narrative by default; optional OpenAI uses aggregated KPIs only when configured server-side.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="stack-heading">
+  <h2 id="stack-heading">Tech stack</h2>
+  <ul class="proj-tech-list">
+    <li><strong>App shell:</strong> Streamlit (single-page orchestration)</li>
+    <li><strong>Data layer:</strong> pandas for typing, grouping, and validation helpers</li>
+    <li><strong>Charts:</strong> Plotly figures with a light template for readability</li>
+    <li><strong>Runtime:</strong> Python 3.11; container entry runs Streamlit on port 8501</li>
+    <li><strong>Optional:</strong> OpenAI client for enhanced copy—not a mandatory dependency for core charts</li>
+  </ul>
+</section>
+
+<section class="proj-section" aria-labelledby="deploy-heading">
+  <h2 id="deploy-heading">Deployment / live app</h2>
+  <div class="proj-prose">
+    <p>The canonical interactive deployment is the Streamlit host at <a href="https://kpi-dashboard-app.vahdetkaratas.com/" target="_blank" rel="noopener noreferrer"><strong>kpi-dashboard-app.vahdetkaratas.com</strong></a>. This static shell only frames the project; it does not proxy API traffic.</p>
+    <p>Source and run instructions: <a href="https://github.com/vahdetkaratas/streamlit-kpi-dashboard" target="_blank" rel="noopener noreferrer">GitHub repository</a> (<code>streamlit run src/app.py</code>, Docker optional).</p>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="limitations-body-heading">
+  <h2 id="limitations-body-heading">Limitations</h2>
+  <div class="proj-prose">
+    <ul>
+      <li>Not a substitute for governed BI catalogs, row-level security, or scheduled enterprise ETL.</li>
+      <li>Performance and upload caps target practical demos—not billion-row warehouses.</li>
+      <li>Refreshing data requires a new load or interaction in the Streamlit session; there is no push pipeline here.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-section" aria-labelledby="value-heading">
+  <h2 id="value-heading">Why this project</h2>
+  <div class="proj-prose">
+    <p>It demonstrates how far you can get with a tight pandas + Streamlit loop: honest validation, charts people actually read, and exports stakeholders can file away—without overselling depth the codebase does not provide.</p>
+  </div>
+</section>
+
+                  </div>
+
+                  <footer class="batch-project-footer">
+                    <p class="name">KPI Dashboard</p>
+                    <p style="margin:0.35rem 0 0;font-size:0.76rem;">CSV analytics · Streamlit · snapshots</p>
+                  </footer>
+                </div>
+              </div>
+            </div>
+
+            <div class="container-fluid p-30-0">
+              <footer class="footer">
+                <div class="art-copy">© <span id="shellYear"></span> Vahdettin Karatas. All rights reserved.</div>
+                <div class="footer-developer">Applied ML, data systems, and production-quality delivery.</div>
+              </footer>
+            </div>
+          </main>
+        </div>
+
+        <aside class="shell-rail" aria-label="Home">
+          <div class="shell-rail-header">
+            <a class="shell-rail-home" href="https://vahdetkaratas.com/" id="shellHomeLink" title="Portfolio home" aria-label="Portfolio home">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="shell-rail-home-icon">
+                <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/>
+              </svg>
+            </a>
+          </div>
+          <div class="shell-rail-spacer" aria-hidden="true"></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="shell.js"></script>
+</body>
+</html>

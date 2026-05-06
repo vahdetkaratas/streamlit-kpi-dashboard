@@ -1,0 +1,197 @@
+{
+  "pageTitle": "KPI Dashboard — Streamlit CSV analytics",
+  "title": "Sales & marketing KPI dashboard",
+  "eyebrow": "Streamlit data product",
+  "summary": "Single-page dashboard for typical sales or marketing CSV exports: column mapping, validation, KPI cards, trend and breakdown charts, optional period comparison, and snapshot export—implemented as a focused Streamlit app with pandas and Plotly.",
+  "metaDescription": "Streamlit KPI dashboard for CSV exports: pandas transforms, Plotly charts, mapping presets, snapshot ZIP export, optional compare-to-previous-period summaries.",
+  "heroTitle": "CSV to leadership-ready KPIs",
+  "logoLine1": "KPI",
+  "logoLine2": "Dashboard",
+  "themeColor": "#0a0c10",
+  "footerProjectName": "KPI Dashboard",
+  "footerProjectSub": "Streamlit · pandas · Plotly",
+  "heroNote": "This page is static HTML. The interactive app runs on the Streamlit host below—upload limits and behavior match that deployment.",
+  "stack": [
+    "Streamlit",
+    "pandas",
+    "Plotly",
+    "Python 3.11"
+  ],
+  "projectLinks": [
+    {
+      "label": "Open live app",
+      "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+      "external": true
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com/vahdetkaratas/streamlit-kpi-dashboard",
+      "external": true
+    }
+  ],
+  "reviewLinks": [
+    {
+      "label": "Open live app",
+      "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+      "external": true
+    },
+    {
+      "label": "GitHub repository",
+      "href": "https://github.com/vahdetkaratas/streamlit-kpi-dashboard",
+      "external": true
+    }
+  ],
+  "relatedMlSystems": [],
+  "relatedDataTools": [],
+  "limitations": [],
+  "profiles": {
+    "recruiter": {
+      "pageTitle": "KPI Dashboard — applied data product",
+      "eyebrow": "Proof-of-work · data product",
+      "summary": "End-to-end CSV KPI workflow I can operate and extend: infer or manual column mapping, pandas-backed validation, Plotly trend and breakdown views, optional previous-period deltas, and exportable snapshot bundles for handoff. Scope stays honest—single-page Streamlit, not a BI platform.",
+      "heroNote": "Static portfolio wrapper; open the Streamlit host to exercise uploads, mapping presets, and exports.",
+      "footerProjectSub": "CSV analytics · Streamlit · snapshots",
+      "projectLinks": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/vahdetkaratas/streamlit-kpi-dashboard",
+          "external": true
+        },
+        {
+          "label": "Open live app",
+          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "CV / profile",
+          "href": "https://vahdetkaratas.com/",
+          "external": true
+        }
+      ],
+      "reviewLinks": [
+        {
+          "label": "GitHub repository",
+          "href": "https://github.com/vahdetkaratas/streamlit-kpi-dashboard",
+          "external": true
+        },
+        {
+          "label": "API docs",
+          "href": "https://rag-qa.vahdetkaratas.com/docs",
+          "external": true
+        },
+        {
+          "label": "CV / profile",
+          "href": "https://vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Architecture notes",
+          "href": "https://github.com/vahdetkaratas/streamlit-kpi-dashboard",
+          "external": true
+        }
+      ],
+      "relatedMlSystems": [
+        {
+          "label": "Portfolio",
+          "href": "https://vahdetkaratas.com/portfolio",
+          "external": true
+        },
+        {
+          "label": "Batch scoring",
+          "href": "https://batch-scoring.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Feature store",
+          "href": "https://feature-store.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Vahdetlabs",
+          "href": "https://vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Monitoring & data quality",
+          "href": "https://monitoring.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Customer churn prediction",
+          "href": "https://churn.vahdetlabs.com/",
+          "external": true
+        }
+      ],
+      "relatedDataTools": [
+        {
+          "label": "Data cleaning toolkit",
+          "href": "https://data-cleaning.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "EDA report generator",
+          "href": "https://eda-report.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "Forecasting demo",
+          "href": "https://forecasting.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "CSV analytics",
+          "href": "https://ai-analysis.vahdetlabs.com/",
+          "external": true
+        },
+        {
+          "label": "KPI dashboard",
+          "href": "https://kpi-dashboard.vahdetlabs.com/",
+          "external": true
+        }
+      ]
+    },
+    "commercial": {
+      "pageTitle": "KPI Dashboard — lightweight dashboard capability",
+      "eyebrow": "Capability demo · CSV to visibility",
+      "summary": "Turn recurring exports into a consistent KPI strip and two charts before you invest in heavier BI: upload or demo data, map columns once (presets help with the same file shape), share snapshots when stakeholders need a quick read. Framed as an internal prototype, not a product replacement.",
+      "heroNote": "Public Streamlit instance for evaluation; production rollouts need your data boundaries, auth, and hosting choices—not assumptions from this static page.",
+      "footerProjectSub": "Prototype dashboard · Streamlit",
+      "projectLinks": [
+        {
+          "label": "Open live app",
+          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Discuss use case",
+          "href": "https://vahdetlabs.com/contact",
+          "external": true
+        },
+        {
+          "label": "Vahdetlabs",
+          "href": "https://vahdetlabs.com/",
+          "external": true
+        }
+      ],
+      "reviewLinks": [
+        {
+          "label": "Open live app",
+          "href": "https://kpi-dashboard-app.vahdetkaratas.com/",
+          "external": true
+        },
+        {
+          "label": "Discuss use case",
+          "href": "https://vahdetlabs.com/contact",
+          "external": true
+        },
+        {
+          "label": "Vahdetlabs",
+          "href": "https://vahdetlabs.com/",
+          "external": true
+        }
+      ],
+      "relatedMlSystems": [],
+      "relatedDataTools": []
+    }
+  }
+}
